@@ -47,8 +47,9 @@ export async function GET() {
     `
     console.log("[v0] Created admin table")
 
-    // Generate bcrypt hash for password "12345"
-    const passwordHash = await bcrypt.hash("12345", 10)
+    // Generate bcrypt hash for admin password from environment variable
+    const adminPassword = process.env.ADMIN_PASSWORD || "admin123"
+    const passwordHash = await bcrypt.hash(adminPassword, 10)
     console.log("[v0] Generated password hash")
 
     // Insert default admin user
