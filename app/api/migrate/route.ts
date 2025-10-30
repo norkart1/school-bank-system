@@ -1,7 +1,7 @@
 import { neon } from "@neondatabase/serverless"
 import bcrypt from "bcryptjs"
 
-const sql = neon(process.env.NEON_NEON_DATABASE_URL!)
+const sql = neon(process.env.DATABASE_URL!)
 
 export async function GET() {
   try {
@@ -48,7 +48,10 @@ export async function GET() {
     console.log("[v0] Created admin table")
 
     // Generate bcrypt hash for admin password from environment variable
-    const adminPassword = process.env.ADMIN_PASSWORD || "admin123"
+    const adminPassword = process.env.ADMIN_PASSWORD
+    if (!adminPassword) {
+      throw new Error("ADMIN_PASSWORD environment variable is required")
+    }
     const passwordHash = await bcrypt.hash(adminPassword, 10)
     console.log("[v0] Generated password hash")
 
